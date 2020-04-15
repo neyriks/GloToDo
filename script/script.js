@@ -6,15 +6,13 @@ const todoControl = document.querySelector('.todo-control'),
     todoList = document.querySelector('.todo-list'),
     todoCompleted = document.querySelector('.todo-completed');
 
-    const todoData = [];
+    let todoData = [];
 
     const render = function() {
 
         todoList.textContent = '';
         todoCompleted.textContent = '';
         localStorage.getItem('memory', JSON.stringify(todoData));
-        const data = JSON.parse(localStorage.getItem('memory')); // Задание 7. Парсим массив.
-        
         todoData.forEach(function(item) {
             const li = document.createElement('li');
             li.classList.add('todo-item');
@@ -49,8 +47,14 @@ const todoControl = document.querySelector('.todo-control'),
 
     const showList = function(){
         todoList.textContent = localStorage.name;
+        todoList.textContent = localStorage.getItem('memory');
     };
-
+let parseMem = JSON.parse(localStorage.getItem('memory'));
+if(parseMem === null) {
+    todoData = [];
+} else {
+    todoData = JSON.parse(localStorage.getItem('memory'));
+}
     todoControl.addEventListener('submit', function(event){
         if (headerInput.value === '') {
             console.log('Пустая строка');
@@ -61,12 +65,10 @@ const todoControl = document.querySelector('.todo-control'),
             value: headerInput.value,
             completed: false
         };
-        
         todoData.push(newToDo);
-
         localStorage.element = headerInput.value;
         localStorage.setItem('memory', JSON.stringify(todoData)); // Задание 7.
-
+        
         showList();
         render();
     });
